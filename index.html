@@ -2,132 +2,168 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bora Charts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>BoraCharts</title>
 <style>
-:root{--bg:#0b0e14;--panel:#131722;--line:#2a2e39;--ink:#d1d4dc;--mute:#787b86;--acc:#2962ff;--up:#089981}
-*{box-sizing:border-box;min-width:0}
+:root{--bg:#000;--panel:#0f0f0f;--line:#232323;--ink:#e6e6e6;--mute:#8a8a8a;--acc:#2962ff}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,Segoe UI,Roboto,Arial,sans-serif}
-body{display:flex;flex-direction:column;overflow:hidden}
-header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
-.logo{font-weight:800;font-size:16px;margin-right:6px}.logo b{color:var(--acc)}
-input{background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:8px 10px;font-size:15px;width:190px}
+body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+.top{display:flex;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid var(--line);padding-top:max(6px,env(safe-area-inset-top))}
+.top form{flex:1}
+input{width:100%;background:#1a1a1a;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 12px;font-size:16px}
 input:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
-button{background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:7px 10px;font-size:13px;cursor:pointer;min-height:34px}
-button:hover{border-color:var(--mute)}button.on{background:var(--acc);border-color:var(--acc);color:#fff}
-.grp{display:flex;gap:4px;flex-wrap:wrap}
-.chips{display:flex;gap:4px;overflow-x:auto;flex:1 1 300px;scrollbar-width:thin}.chips button{flex:none}
-.tape{height:46px;border-bottom:1px solid var(--line)}
-main{flex:1;display:flex;min-height:0}
-#grid{flex:1;display:grid;gap:4px;padding:4px;min-height:0}
-#grid.l1{grid-template:1fr/1fr}#grid.l2{grid-template:1fr/1fr 1fr}#grid.l4{grid-template:1fr 1fr/1fr 1fr}#grid.l6{grid-template:1fr 1fr/1fr 1fr 1fr}
-.cell{position:relative;border:2px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column}
-.cell.act{border-color:var(--acc)}
-.cell .bar{font-size:12px;color:var(--mute);padding:3px 8px;cursor:pointer;display:flex;justify-content:space-between}
-.cell.act .bar{color:#fff;background:var(--acc)}
+button{background:#1a1a1a;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 11px;font-size:13px;cursor:pointer;min-height:36px;white-space:nowrap}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.row{display:flex;gap:5px;overflow-x:auto;padding:6px 8px;scrollbar-width:none;flex:none}.row::-webkit-scrollbar{display:none}.row button{flex:none}
+#views{flex:1;min-height:0;position:relative}
+.view{position:absolute;inset:0;display:none;flex-direction:column}.view.on{display:flex}
+.fill{flex:1;min-height:0;position:relative}
+.tape{height:46px;flex:none;border-bottom:1px solid var(--line)}
+#grid{display:grid;gap:3px;height:100%;padding:0}
+#grid.l1{grid-template:1fr/1fr}#grid.l2{grid-template:1fr 1fr/1fr}#grid.l4{grid-template:1fr 1fr/1fr 1fr}
+.cell{position:relative;border:1px solid transparent;overflow:hidden;display:flex;flex-direction:column}
+#grid:not(.l1) .cell.act{border-color:var(--acc)}
 .cell .w{flex:1;min-height:0}
-aside{width:360px;border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--panel)}
-aside.hide{display:none}
-.tabs{display:flex;gap:4px;padding:6px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
-#side{flex:1;min-height:0}
-.tradingview-widget-container{height:100%;width:100%}
-.tradingview-widget-container__widget{height:100%;width:100%}
-#warn{display:none;position:fixed;inset:auto 10px 10px 10px;z-index:9;background:#f23645;color:#fff;padding:12px 14px;border-radius:8px;font-size:14px}
-.note{font-size:11px;color:var(--mute);padding:4px 10px}
-@media(max-width:900px){header{gap:6px;padding:6px}.logo{display:none}#lay button[data-n="6"]{display:none}.chips{flex-basis:100%}main{flex-direction:column;overflow-y:auto}#grid{min-height:70vh;flex:none}#grid.l2,#grid.l4,#grid.l6{grid-template-columns:1fr;grid-auto-rows:60vh;grid-template-rows:none}aside{width:100%;height:80vh;flex:none;border-left:0;border-top:1px solid var(--line)}input{width:140px}}
+.tradingview-widget-container,.tradingview-widget-container__widget{height:100%;width:100%}
+nav{display:flex;border-top:1px solid var(--line);background:var(--panel);padding-bottom:env(safe-area-inset-bottom);flex:none}
+nav button{flex:1;background:none;border:0;border-radius:0;color:var(--mute);font-size:11px;padding:8px 2px;min-height:54px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button.on{color:#fff;background:none}nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8}
+.legal{padding:16px;color:var(--mute);font-size:13px;line-height:1.6;overflow-y:auto}
+.legal h2{color:var(--ink);font-size:17px;margin:0 0 8px}.legal a{color:#6f9bff}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}.menu button{min-height:56px;font-size:15px}
+#warn{display:none;position:fixed;left:10px;right:10px;bottom:70px;z-index:9;background:#f23645;color:#fff;padding:12px 14px;border-radius:8px}
+@media(min-width:900px){#grid.l2{grid-template:1fr/1fr 1fr}nav{justify-content:center}nav button{flex:0 0 110px}}
 </style>
 </head>
 <body>
-<header>
-  <div class="logo">Bora<b>Charts</b></div>
-  <form id="f"><input id="q" placeholder="Sembol: BTCUSDT, THYAO, AAPL" autocomplete="off"></form>
-  <div class="grp" id="lay"></div>
-  <div class="chips" id="chips"></div>
-  <button id="tog">Panel</button>
-</header>
-<div class="tape" id="tape"></div>
-<main>
-  <div id="grid"></div>
-  <aside id="as">
-    <div class="tabs" id="tabs"></div>
-    <div id="side"></div>
-    <div class="note">Veriler TradingView'den canlı gelir. Grafiğin üst çubuğuna tıklayıp seçin, sonra sembol değiştirin.</div>
-  </aside>
-</main>
-<div id="warn">Grafikler yüklenemedi. Bu sayfa Claude içindeki önizlemede çalışmaz, Chrome gibi gerçek bir tarayıcıda açılmalı.</div>
+<div class="top">
+  <form id="f"><input id="q" placeholder="Sembol ara: BTCUSDT, THYAO, AAPL" autocomplete="off" enterkeyhint="go"></form>
+</div>
+
+<div id="views">
+  <section class="view" id="v-watch"><div class="tape" id="tape"></div><div class="row" id="wtabs"></div><div class="fill" id="watch"></div></section>
+  <section class="view" id="v-chart"><div class="row" id="ctl"></div><div class="fill"><div id="grid"></div></div></section>
+  <section class="view" id="v-scan"><div class="row" id="stabs"></div><div class="fill" id="scan"></div></section>
+  <section class="view" id="v-news"><div class="row" id="ntabs"></div><div class="fill" id="news"></div></section>
+  <section class="view" id="v-tech"><div class="fill" id="tech"></div></section>
+  <section class="view" id="v-heat"><div class="row" id="htabs"></div><div class="fill" id="heat"></div></section>
+  <section class="view" id="v-cal"><div class="fill" id="cal"></div></section>
+  <section class="view" id="v-menu">
+    <div class="menu">
+      <button data-go="tech">Teknik analiz</button><button data-go="heat">Isı haritası</button>
+      <button data-go="cal">Ekonomik takvim</button><button data-go="scan">Piyasa tarayıcı</button>
+    </div>
+    <div class="legal">
+      <h2>Hakkında</h2>
+      BoraCharts kişisel, ücretsiz ve reklamsız bir piyasa ekranıdır. Grafikler, fiyatlar, haberler ve tarayıcılar
+      <a href="https://www.tradingview.com/" rel="noopener">TradingView</a>'in herkese açık ücretsiz widget'ları ile gösterilir; tüm veriler ve marka hakları sahiplerine aittir.
+      BoraCharts TradingView ile bağlantılı değildir ve TradingView tarafından onaylanmamıştır. Bazı borsaların verileri gecikmeli olabilir.
+      <br><br><b>Yatırım tavsiyesi değildir.</b> Buradaki hiçbir bilgi al-sat önerisi değildir; kararların sorumluluğu kullanıcıya aittir.
+    </div>
+  </section>
+</div>
+
+<nav id="nav">
+  <button data-v="watch"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>İzleme</button>
+  <button data-v="chart"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 8-9"/></svg>Grafik</button>
+  <button data-v="scan"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Tarayıcı</button>
+  <button data-v="news"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8M8 13h8M8 16h5"/></svg>Haberler</button>
+  <button data-v="menu"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>Menü</button>
+</nav>
+<div id="warn">Grafikler yüklenemedi. İnternet bağlantını kontrol et ve sayfayı Chrome gibi bir tarayıcıda aç.</div>
+
 <script>
 {
 const TV='https://s3.tradingview.com/external-embedding/embed-widget-';
-const QUICK=[['BTC','BINANCE:BTCUSDT'],['ETH','BINANCE:ETHUSDT'],['SOL','BINANCE:SOLUSDT'],['XRP','BINANCE:XRPUSDT'],['BIST100','BIST:XU100'],['THYAO','BIST:THYAO'],['ASELS','BIST:ASELS'],['USD/TRY','FX:USDTRY'],['Altın','OANDA:XAUUSD'],['S&P500','FOREXCOM:SPXUSD'],['NASDAQ','NASDAQ:NDX'],['AAPL','NASDAQ:AAPL'],['TSLA','NASDAQ:TSLA'],['NVDA','NASDAQ:NVDA']];
-const DEF=['BINANCE:BTCUSDT','BINANCE:ETHUSDT','BIST:XU100','OANDA:XAUUSD','NASDAQ:NVDA','FX:USDTRY'];
-let st={layout:4,syms:DEF.slice(),ints:['60','60','60','60','60','60'],active:0,tab:'izle',side:true};
-try{Object.assign(st,JSON.parse(localStorage.getItem('boracharts')||'{}'))}catch(e){}
-const save=()=>{try{localStorage.setItem('boracharts',JSON.stringify(st))}catch(e){}};
 const $=id=>document.getElementById(id);
+const QUICK=[['BTC','BINANCE:BTCUSDT'],['ETH','BINANCE:ETHUSDT'],['SOL','BINANCE:SOLUSDT'],['XRP','BINANCE:XRPUSDT'],['BIST100','BIST:XU100'],['THYAO','BIST:THYAO'],['ASELS','BIST:ASELS'],['USD/TRY','FX:USDTRY'],['Altın','OANDA:XAUUSD'],['S&P500','FOREXCOM:SPXUSD'],['NASDAQ','NASDAQ:NDX'],['AAPL','NASDAQ:AAPL'],['TSLA','NASDAQ:TSLA'],['NVDA','NASDAQ:NVDA']];
+const DEF=['BINANCE:BTCUSDT','BINANCE:ETHUSDT','BIST:XU100','OANDA:XAUUSD'];
+let st={view:'chart',layout:1,syms:DEF.slice(),active:0,wt:0,st:0,nt:0,ht:0};
+try{Object.assign(st,JSON.parse(localStorage.getItem('boracharts2')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('boracharts2',JSON.stringify(st))}catch(e){}};
+const base={colorTheme:'dark',isTransparent:true,locale:'tr',width:'100%',height:'100%'};
 
 function widget(el,name,cfg){
   el.innerHTML='';
   const c=document.createElement('div');c.className='tradingview-widget-container';
   const w=document.createElement('div');w.className='tradingview-widget-container__widget';
-  const s=document.createElement('script');s.src=TV+name+'.js';s.async=true;s.type='text/javascript';
-  s.text=JSON.stringify(cfg);
+  const s=document.createElement('script');s.src=TV+name+'.js';s.async=true;s.text=JSON.stringify(cfg);
   c.append(w,s);el.append(c);
 }
-const base={colorTheme:'dark',isTransparent:true,locale:'tr',width:'100%',height:'100%'};
+const L=list=>list.map(([s,d])=>({s,d}));
 
+/* ---- Grafik ---- */
+const mobile=()=>innerWidth<700;
 function chart(i){
   const cell=$('grid').children[i];if(!cell)return;
-  cell.querySelector('.bar span').textContent=st.syms[i];
-  widget(cell.querySelector('.w'),'advanced-chart',{autosize:true,symbol:st.syms[i],interval:st.ints[i]||'60',timezone:'Europe/Istanbul',theme:'dark',style:'1',locale:'tr',allow_symbol_change:true,hide_side_toolbar:false,withdateranges:true,details:i===0&&st.layout===1,calendar:false,save_image:true,support_host:'https://www.tradingview.com'});
+  widget(cell.querySelector('.w'),'advanced-chart',{autosize:true,symbol:st.syms[i],interval:'60',timezone:'Europe/Istanbul',theme:'dark',style:'1',locale:'tr',backgroundColor:'#000000',gridColor:'rgba(255,255,255,0.05)',allow_symbol_change:true,hide_side_toolbar:st.layout>1&&mobile(),hide_top_toolbar:false,withdateranges:st.layout===1,save_image:true,support_host:'https://www.tradingview.com'});
 }
 function grid(){
-  const g=$('grid');g.className='l'+st.layout;
-  g.innerHTML=Array.from({length:st.layout},(_,i)=>`<div class="cell${i===st.active?' act':''}"><div class="bar" data-i="${i}"><span></span><em>${i+1}</em></div><div class="w"></div></div>`).join('');
+  $('grid').className='l'+st.layout;
+  $('grid').innerHTML=Array.from({length:st.layout},(_,i)=>`<div class="cell${i===st.active?' act':''}" data-i="${i}"><div class="w"></div></div>`).join('');
   for(let i=0;i<st.layout;i++)chart(i);
 }
-function setActive(i){st.active=i;[...$('grid').children].forEach((c,k)=>c.classList.toggle('act',k===i));save()}
+function ctl(){
+  $('ctl').innerHTML=[1,2,4].map(n=>`<button data-n="${n}" class="${n===st.layout?'on':''}">${n} grafik</button>`).join('')+QUICK.map(([t,s])=>`<button data-s="${s}" class="${s===st.syms[st.active]?'on':''}">${t}</button>`).join('');
+}
+$('ctl').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.n){st.layout=+b.dataset.n;if(st.active>=st.layout)st.active=0;save();ctl();grid()}
+  else setSym(b.dataset.s)};
+$('grid').addEventListener('pointerdown',e=>{const c=e.target.closest('.cell');if(!c)return;st.active=+c.dataset.i;[...$('grid').children].forEach(x=>x.classList.toggle('act',x===c));save();ctl()});
 function setSym(sym){
   sym=sym.trim().toUpperCase();if(!sym)return;
-  if(!sym.includes(':')){if(/USDT$|BUSD$|USDC$/.test(sym))sym='BINANCE:'+sym;else if(/^[A-Z]{5}$/.test(sym)&&!/^[A-Z]{3}(TRY|USD|EUR)$/.test(sym))sym='BIST:'+sym}
+  if(!sym.includes(':')){if(/(USDT|USDC|BUSD)$/.test(sym))sym='BINANCE:'+sym;else if(/^[A-Z]{5}$/.test(sym)&&!/^[A-Z]{3}(TRY|USD|EUR)$/.test(sym))sym='BIST:'+sym}
   if(st.active>=st.layout)st.active=0;
-  st.syms[st.active]=sym;save();chart(st.active);side();
+  st.syms[st.active]=sym;save();ctl();chart(st.active);loaded.tech=false;
+  if(NEWS[st.nt]&&NEWS[st.nt][1]==='sym')loaded.news=false;
+  show('chart');
 }
+$('f').onsubmit=e=>{e.preventDefault();setSym($('q').value);$('q').value='';$('q').blur()};
 
-$('lay').innerHTML=[1,2,4,6].map(n=>`<button data-n="${n}">${n} grafik</button>`).join('');
-const layBtns=()=>[...$('lay').children].forEach(b=>b.classList.toggle('on',+b.dataset.n===st.layout));
-$('lay').onclick=e=>{const n=+e.target.dataset.n;if(!n)return;st.layout=n;if(st.active>=n)st.active=0;save();layBtns();grid()};
-$('chips').innerHTML=QUICK.map(([t,s])=>`<button data-s="${s}">${t}</button>`).join('');
-$('chips').onclick=e=>{if(e.target.dataset.s)setSym(e.target.dataset.s)};
-$('f').onsubmit=e=>{e.preventDefault();setSym($('q').value);$('q').value=''};
-$('grid').onclick=e=>{const b=e.target.closest('.bar');if(b)setActive(+b.dataset.i)};
+/* ---- Sekmeli görünümler ---- */
+const WATCH=[
+ ['Kripto',L([['BINANCE:BTCUSDT','Bitcoin'],['BINANCE:ETHUSDT','Ethereum'],['BINANCE:SOLUSDT','Solana'],['BINANCE:BNBUSDT','BNB'],['BINANCE:XRPUSDT','XRP'],['BINANCE:DOGEUSDT','Dogecoin'],['BINANCE:ADAUSDT','Cardano'],['BINANCE:AVAXUSDT','Avalanche']])],
+ ['BIST',L([['BIST:XU100','BIST 100'],['BIST:THYAO','THY'],['BIST:ASELS','Aselsan'],['BIST:GARAN','Garanti'],['BIST:AKBNK','Akbank'],['BIST:KCHOL','Koç'],['BIST:TUPRS','Tüpraş'],['BIST:BIMAS','BİM']])],
+ ['ABD',L([['FOREXCOM:SPXUSD','S&P 500'],['NASDAQ:NDX','Nasdaq 100'],['NASDAQ:AAPL','Apple'],['NASDAQ:NVDA','Nvidia'],['NASDAQ:TSLA','Tesla'],['NASDAQ:MSFT','Microsoft'],['NASDAQ:AMZN','Amazon'],['NASDAQ:META','Meta']])],
+ ['Döviz/Emtia',L([['FX:USDTRY','USD/TRY'],['FX:EURTRY','EUR/TRY'],['FX:EURUSD','EUR/USD'],['OANDA:XAUUSD','Altın'],['OANDA:XAGUSD','Gümüş'],['TVC:UKOIL','Brent']])]];
+const SCAN=[['Kripto',{market:'crypto',screener_type:'crypto_mkt',displayCurrency:'USD',defaultScreen:'general'}],['BIST',{market:'turkey',defaultScreen:'most_capitalized'}],['ABD',{market:'america',defaultScreen:'most_capitalized'}],['Döviz',{market:'forex',defaultScreen:'general'}]];
+const NEWS=[['Tüm piyasalar','all'],['Kripto','crypto'],['Hisseler','stock'],['Döviz','forex'],['Endeksler','index'],['Ekonomi','economic'],['Seçili sembol','sym']];
+const HEAT=[['Kripto','crypto'],['S&P 500','SPX500'],['Nasdaq 100','NASDAQ100']];
 
-const TABS={
-  izle:['İzleme',()=>['market-overview',{...base,dateRange:'1D',showChart:true,showSymbolLogo:true,showFloatingTooltip:true,tabs:[
-    {title:'Kripto',symbols:[['BINANCE:BTCUSDT','Bitcoin'],['BINANCE:ETHUSDT','Ethereum'],['BINANCE:SOLUSDT','Solana'],['BINANCE:BNBUSDT','BNB'],['BINANCE:XRPUSDT','XRP'],['BINANCE:DOGEUSDT','Dogecoin']].map(([s,d])=>({s,d}))},
-    {title:'BIST',symbols:[['BIST:XU100','BIST 100'],['BIST:THYAO','THY'],['BIST:ASELS','Aselsan'],['BIST:GARAN','Garanti'],['BIST:KCHOL','Koç'],['BIST:TUPRS','Tüpraş']].map(([s,d])=>({s,d}))},
-    {title:'ABD',symbols:[['FOREXCOM:SPXUSD','S&P 500'],['NASDAQ:NDX','Nasdaq 100'],['NASDAQ:AAPL','Apple'],['NASDAQ:NVDA','Nvidia'],['NASDAQ:TSLA','Tesla'],['NASDAQ:MSFT','Microsoft']].map(([s,d])=>({s,d}))},
-    {title:'Döviz/Emtia',symbols:[['FX:USDTRY','USD/TRY'],['FX:EURTRY','EUR/TRY'],['FX:EURUSD','EUR/USD'],['OANDA:XAUUSD','Altın'],['OANDA:XAGUSD','Gümüş'],['TVC:UKOIL','Brent']].map(([s,d])=>({s,d}))}]}]],
-  teknik:['Teknik',()=>['technical-analysis',{...base,interval:'1h',showIntervalTabs:true,displayMode:'multiple',symbol:st.syms[st.active]||DEF[0]}]],
-  tarayici:['Tarayıcı',()=>['screener',{...base,defaultColumn:'overview',defaultScreen:'general',market:'crypto',showToolbar:true,screener_type:'crypto_mkt',displayCurrency:'USD'}]],
-  bist:['BIST',()=>['screener',{...base,defaultColumn:'overview',defaultScreen:'most_capitalized',market:'turkey',showToolbar:true}]],
-  isi:['Isı haritası',()=>['crypto-coins-heatmap',{...base,dataSource:'Crypto',blockSize:'market_cap_calc',blockColor:'change',symbolUrl:'',hasTopBar:true,isDataSetEnabled:true,isZoomEnabled:true,hasSymbolTooltip:true}]],
-  takvim:['Takvim',()=>['events',{...base,importanceFilter:'0,1',countryFilter:'us,eu,tr,gb,cn,jp'}]],
-  haber:['Haberler',()=>['timeline',{...base,feedMode:'symbol',symbol:st.syms[st.active]||DEF[0],displayMode:'regular'}]]
+function tabs(row,list,key,cb){
+  row.innerHTML=list.map((t,i)=>`<button data-i="${i}" class="${i===st[key]?'on':''}">${t[0]}</button>`).join('');
+  row.onclick=e=>{const b=e.target.closest('button');if(!b)return;st[key]=+b.dataset.i;save();tabs(row,list,key,cb);cb()};
+}
+const R={
+  watch(){widget($('watch'),'market-overview',{...base,dateRange:'1D',showChart:true,showSymbolLogo:true,showFloatingTooltip:true,plotLineColorGrowing:'#2962ff',plotLineColorFalling:'#2962ff',tabs:[{title:WATCH[st.wt][0],symbols:WATCH[st.wt][1]}]})},
+  scan(){widget($('scan'),'screener',{...base,defaultColumn:'overview',showToolbar:true,...SCAN[st.st][1]})},
+  news(){const m=NEWS[st.nt][1];
+    widget($('news'),'timeline',{...base,displayMode:'regular',...(m==='all'?{feedMode:'all_symbols'}:m==='sym'?{feedMode:'symbol',symbol:st.syms[st.active]}:{feedMode:'market',market:m})})},
+  tech(){widget($('tech'),'technical-analysis',{...base,interval:'1h',showIntervalTabs:true,displayMode:'multiple',symbol:st.syms[st.active]})},
+  heat(){const d=HEAT[st.ht][1];const common={...base,blockColor:'change',symbolUrl:'',hasTopBar:true,isDataSetEnabled:true,isZoomEnabled:true,hasSymbolTooltip:true};
+    if(d==='crypto')widget($('heat'),'crypto-coins-heatmap',{...common,dataSource:'Crypto',blockSize:'market_cap_calc'});
+    else widget($('heat'),'stock-heatmap',{...common,dataSource:d,exchanges:[],grouping:'sector',blockSize:'market_cap_basic',isMonoSize:false})},
+  cal(){widget($('cal'),'events',{...base,importanceFilter:'0,1',countryFilter:'us,eu,tr,gb,cn,jp'})},
+  menu(){}, chart(){}
 };
-$('tabs').innerHTML=Object.entries(TABS).map(([k,[t]])=>`<button data-t="${k}">${t}</button>`).join('');
-function side(){
-  if(!TABS[st.tab])st.tab='izle';
-  [...$('tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.t===st.tab));
-  const [n,c]=TABS[st.tab][1]();widget($('side'),n,c);
-}
-$('tabs').onclick=e=>{const t=e.target.dataset.t;if(!t)return;st.tab=t;save();side()};
-const sideVis=()=>{$('as').classList.toggle('hide',!st.side);$('tog').classList.toggle('on',st.side)};
-$('tog').onclick=()=>{st.side=!st.side;save();sideVis()};
+const loaded={};
+tabs($('wtabs'),WATCH,'wt',R.watch);tabs($('stabs'),SCAN,'st',R.scan);tabs($('ntabs'),NEWS,'nt',R.news);tabs($('htabs'),HEAT,'ht',R.heat);
 
-widget($('tape'),'ticker-tape',{colorTheme:'dark',isTransparent:true,displayMode:'adaptive',showSymbolLogo:true,locale:'tr',symbols:QUICK.map(([t,s])=>({proName:s,title:t}))});
-try{if(matchMedia('(max-width:900px)').matches&&!localStorage.getItem('boracharts'))st.layout=1}catch(e){}
-layBtns();sideVis();grid();side();
-setTimeout(()=>{if(!document.querySelector('#grid iframe'))$('warn').style.display='block'},8000);
+function show(v){
+  if(!R[v])v='chart';st.view=v;save();
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+  const navV=['tech','heat','cal'].includes(v)?'menu':v;
+  [...$('nav').children].forEach(b=>b.classList.toggle('on',b.dataset.v===navV));
+  if(!loaded[v]){loaded[v]=true;R[v]()}
+  if(v==='watch'&&!loaded.tape){loaded.tape=true;widget($('tape'),'ticker-tape',{colorTheme:'dark',isTransparent:true,displayMode:'adaptive',showSymbolLogo:true,locale:'tr',symbols:QUICK.map(([t,s])=>({proName:s,title:t}))})}
+}
+$('nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)};
+document.querySelector('.menu').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.go)};
+
+ctl();grid();show(st.view);
+setTimeout(()=>{if(!document.querySelector('iframe'))$('warn').style.display='block'},9000);
 }
 </script>
 </body>
