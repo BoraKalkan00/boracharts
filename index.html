@@ -16,6 +16,7 @@ input{width:100%;background:#1a1a1a;border:1px solid var(--line);color:var(--ink
 input:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 button{background:#1a1a1a;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 11px;font-size:13px;cursor:pointer;min-height:36px;white-space:nowrap}
 button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.row[hidden]{display:none!important}
 .row{display:flex;gap:5px;overflow-x:auto;padding:6px 8px;scrollbar-width:none;flex:none}.row::-webkit-scrollbar{display:none}.row button{flex:none}
 #views{flex:1;min-height:0;position:relative}
 .view{position:absolute;inset:0;display:none;flex-direction:column}.view.on{display:flex}
@@ -34,6 +35,41 @@ nav button.on{color:#fff;background:none}nav svg{width:22px;height:22px;fill:non
 .legal h2{color:var(--ink);font-size:17px;margin:0 0 8px}.legal a{color:#6f9bff}
 .menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}.menu button{min-height:56px;font-size:15px}
 #warn{display:none;position:fixed;left:10px;right:10px;bottom:70px;z-index:9;background:#f23645;color:#fff;padding:12px 14px;border-radius:8px}
+
+/* Kripto Pro */
+.up{color:#089981}.dn{color:#f23645}
+.pbar{display:flex;align-items:center;gap:6px;padding:6px 8px;flex:none;border-bottom:1px solid var(--line)}
+#pSymBtn{display:flex;align-items:baseline;gap:8px;background:none;border:0;padding:4px 2px;font-size:15px}
+#pSymBtn b{font-size:16px}#pPx{font-variant-numeric:tabular-nums;font-size:16px;font-weight:600}
+#pLive{width:8px;height:8px;border-radius:50%;background:#555;flex:none}#pLive.on{background:#089981;box-shadow:0 0 6px #089981}
+.pbar .sp{flex:1}
+#kc{position:absolute;inset:0}
+.prow{border-bottom:1px solid var(--line)}.prow input{width:130px;flex:none;padding:6px 10px}
+.pwrap{flex:1;min-height:0;display:flex;flex-direction:column}
+#pPanel{flex:none;height:38%;border-top:1px solid var(--line);display:flex;flex-direction:column;background:var(--panel)}
+#pPanel.closed{height:auto}#pPanel.closed .pbody{display:none}
+#pTabs{display:flex;gap:4px;padding:6px 8px;flex:none}#pTabs button{flex:1}#pTabs [data-t=toggle]{flex:0 0 44px}
+.pbody{flex:1;overflow-y:auto;padding:4px 10px 12px}
+.pt label{display:block;font-size:12px;color:var(--mute);margin:8px 0 3px}
+.pt input,.pt select{width:100%;background:#1a1a1a;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 10px;font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg{display:flex;gap:4px;margin-top:6px}.seg button{flex:1}
+.bigb{min-height:48px;font-size:15px;font-weight:700;border:0;color:#fff}#tLong{background:#089981}#tShort{background:#f23645}
+.acct{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-top:6px;gap:8px;flex-wrap:wrap}.acct b{color:var(--ink)}
+.it{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}.it>div:first-child{flex:1}.it .r{text-align:right;font-variant-numeric:tabular-nums}
+.it small{color:var(--mute)}.it.done{opacity:.5}.pt h4{margin:14px 0 4px;font-size:13px;color:var(--mute)}
+.empty{color:var(--mute);text-align:center;padding:16px 0}.ghost{width:100%;margin-top:14px;background:none}
+.note2{font-size:12px;color:var(--mute);margin-top:8px}
+#pSheet{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column}
+#pSheet[hidden]{display:none}
+#slist{flex:1;overflow-y:auto}
+..row[hidden]{display:none!important}
+.row{display:flex;align-items:baseline;gap:6px;padding:12px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.srow small{color:var(--mute)}.srow .sp{margin-left:auto;font-variant-numeric:tabular-nums}.srow .sc{width:72px;text-align:right;font-variant-numeric:tabular-nums}
+.star{color:#444;font-size:18px;padding:0 4px}.star.on{color:#ffd600}
+#toasts{position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:30;display:flex;flex-direction:column;gap:6px;width:min(92vw,420px)}
+.toast{background:#1e222d;border:1px solid #2a2e39;padding:10px 14px;border-radius:8px;box-shadow:0 4px 18px #0008}.toast.err{border-color:#f23645}.toast.alarm{background:#ffd600;color:#000;font-weight:700}
+@media(min-width:900px){#v-pro .pmain{flex-direction:row}#pPanel{height:auto;width:340px;border-top:0;border-left:1px solid var(--line)}#pPanel.closed{width:auto}}
 @media(min-width:900px){#grid.l2{grid-template:1fr/1fr 1fr}nav{justify-content:center}nav button{flex:0 0 110px}}
 </style>
 </head>
@@ -43,6 +79,38 @@ nav button.on{color:#fff;background:none}nav svg{width:22px;height:22px;fill:non
 </div>
 
 <div id="views">
+  <section class="view" id="v-pro">
+    <div class="pbar"><span id="pLive" title="Canlı bağlantı"></span><button id="pSymBtn"><b id="pName">BTC/USDT</b><span id="pPx">…</span><small id="pCh"></small></button><span class="sp"></span><button id="pIndBtn">İndikatör</button><button id="pDrawBtn">Çizim</button></div>
+    <div class="row prow" id="pIv"></div>
+    <div class="row prow" id="pInds" hidden></div>
+    <div class="row prow" id="pTools" hidden></div>
+    <div class="pwrap pmain">
+      <div class="fill"><div id="kc"></div></div>
+      <div id="pPanel">
+        <div id="pTabs"><button data-t="trade">İşlem</button><button data-t="pos">Pozisyonlar</button><button data-t="alert">Alarmlar</button><button data-t="toggle" aria-label="Paneli aç/kapat">↕</button></div>
+        <div class="pbody">
+          <div class="pt" id="pt-trade">
+            <div class="seg" id="tType"><button data-o="market">Piyasa</button><button data-o="limit">Limit</button></div>
+            <input id="tPx" type="number" inputmode="decimal" step="any" placeholder="Limit fiyatı" hidden style="margin-top:8px">
+            <div class="two"><div><label for="tAmt">Teminat (USDT)</label><input id="tAmt" type="number" inputmode="decimal" step="any" value="100"></div>
+            <div><label for="tLev">Kaldıraç</label><select id="tLev"><option>1</option><option>2</option><option>3</option><option>5</option><option>10</option><option>20</option><option>50</option></select></div></div>
+            <div class="seg" id="tPct"><button data-p="10">%10</button><button data-p="25">%25</button><button data-p="50">%50</button><button data-p="100">%100</button></div>
+            <div class="two"><div><label for="tTp">Kâr al (isteğe bağlı)</label><input id="tTp" type="number" inputmode="decimal" step="any"></div><div><label for="tSl">Zarar durdur (isteğe bağlı)</label><input id="tSl" type="number" inputmode="decimal" step="any"></div></div>
+            <div class="two" style="margin-top:10px"><button class="bigb" id="tLong">AL / Long</button><button class="bigb" id="tShort">SAT / Short</button></div>
+            <div class="acct"><span>Bakiye <b id="tBal">-</b></span><span>Özsermaye <b id="tEq">-</b></span><span>Toplam <b id="tTot">-</b></span></div>
+            <p class="note2">Sanal para ile deneme (paper trading). Gerçek para kullanılmaz. Komisyon %0,1.</p>
+          </div>
+          <div class="pt" id="pt-pos" hidden><div id="posList"></div></div>
+          <div class="pt" id="pt-alert" hidden>
+            <label for="aPx">Fiyat bu seviyeye gelince haber ver</label>
+            <div class="two"><input id="aPx" type="number" inputmode="decimal" step="any" placeholder="Fiyat"><button id="aAdd" class="on">Alarm kur</button></div>
+            <p class="note2">Alarmlar bu sayfa açıkken çalar (ses, titreşim ve bildirim).</p>
+            <div id="alList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <section class="view" id="v-watch"><div class="tape" id="tape"></div><div class="row" id="wtabs"></div><div class="fill" id="watch"></div></section>
   <section class="view" id="v-chart"><div class="row" id="ctl"></div><div class="fill"><div id="grid"></div></div></section>
   <section class="view" id="v-scan"><div class="row" id="stabs"></div><div class="fill" id="scan"></div></section>
@@ -60,7 +128,7 @@ nav button.on{color:#fff;background:none}nav svg{width:22px;height:22px;fill:non
       BoraCharts kişisel, ücretsiz ve reklamsız bir piyasa ekranıdır. Grafikler, fiyatlar, haberler ve tarayıcılar
       <a href="https://www.tradingview.com/" rel="noopener">TradingView</a>'in herkese açık ücretsiz widget'ları ile gösterilir; tüm veriler ve marka hakları sahiplerine aittir.
       BoraCharts TradingView ile bağlantılı değildir ve TradingView tarafından onaylanmamıştır. Bazı borsaların verileri gecikmeli olabilir.
-      <br><br><b>Yatırım tavsiyesi değildir.</b> Buradaki hiçbir bilgi al-sat önerisi değildir; kararların sorumluluğu kullanıcıya aittir.
+      <br><br>Kripto sekmesindeki fiyatlar ve grafikler Binance'in herkese açık verisinden gecikmesiz gelir; grafik motoru açık kaynaklı KLineChart'tır (Apache 2.0). Hisse ve döviz verileri borsaya göre gecikmeli olabilir.<br><br><b>Yatırım tavsiyesi değildir.</b> Buradaki hiçbir bilgi al-sat önerisi değildir; kararların sorumluluğu kullanıcıya aittir.
     </div>
   </section>
 </div>
@@ -68,10 +136,12 @@ nav button.on{color:#fff;background:none}nav svg{width:22px;height:22px;fill:non
 <nav id="nav">
   <button data-v="watch"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>İzleme</button>
   <button data-v="chart"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 8-9"/></svg>Grafik</button>
-  <button data-v="scan"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Tarayıcı</button>
+  <button data-v="pro"><svg viewBox="0 0 24 24"><path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/></svg>Kripto</button>
   <button data-v="news"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8M8 13h8M8 16h5"/></svg>Haberler</button>
   <button data-v="menu"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>Menü</button>
 </nav>
+<div id="pSheet" hidden><div class="top"><form onsubmit="return false"><input id="sq" placeholder="Coin ara: PEPE, DOGE…" autocomplete="off"></form><button id="sClose">Kapat</button></div><div id="slist"></div></div>
+<div id="toasts"></div>
 <div id="warn">Grafikler yüklenemedi. İnternet bağlantını kontrol et ve sayfayı Chrome gibi bir tarayıcıda aç.</div>
 
 <script>
@@ -146,7 +216,7 @@ const R={
     if(d==='crypto')widget($('heat'),'crypto-coins-heatmap',{...common,dataSource:'Crypto',blockSize:'market_cap_calc'});
     else widget($('heat'),'stock-heatmap',{...common,dataSource:d,exchanges:[],grouping:'sector',blockSize:'market_cap_basic',isMonoSize:false})},
   cal(){widget($('cal'),'events',{...base,importanceFilter:'0,1',countryFilter:'us,eu,tr,gb,cn,jp'})},
-  menu(){}, chart(){}
+  menu(){}, chart(){}, pro(){}
 };
 const loaded={};
 tabs($('wtabs'),WATCH,'wt',R.watch);tabs($('stabs'),SCAN,'st',R.scan);tabs($('ntabs'),NEWS,'nt',R.news);tabs($('htabs'),HEAT,'ht',R.heat);
@@ -154,17 +224,21 @@ tabs($('wtabs'),WATCH,'wt',R.watch);tabs($('stabs'),SCAN,'st',R.scan);tabs($('nt
 function show(v){
   if(!R[v])v='chart';st.view=v;save();
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
-  const navV=['tech','heat','cal'].includes(v)?'menu':v;
+  const navV=['tech','heat','cal','scan'].includes(v)?'menu':v;
   [...$('nav').children].forEach(b=>b.classList.toggle('on',b.dataset.v===navV));
   if(!loaded[v]){loaded[v]=true;R[v]()}
+  if(v==='pro'&&window.BoraPro)BoraPro.start();
   if(v==='watch'&&!loaded.tape){loaded.tape=true;widget($('tape'),'ticker-tape',{colorTheme:'dark',isTransparent:true,displayMode:'adaptive',showSymbolLogo:true,locale:'tr',symbols:QUICK.map(([t,s])=>({proName:s,title:t}))})}
 }
 $('nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)};
 document.querySelector('.menu').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.go)};
 
 ctl();grid();show(st.view);
-setTimeout(()=>{if(!document.querySelector('iframe'))$('warn').style.display='block'},9000);
+window.addEventListener('load',()=>{if(st.view==='pro'&&window.BoraPro)BoraPro.start()});
+setTimeout(()=>{if(st.view!=='pro'&&!document.querySelector('iframe'))$('warn').style.display='block'},9000);
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/klinecharts@9.8.12/dist/umd/klinecharts.min.js"></script>
+<script src="pro.js?v=2"></script>
 </body>
 </html>
